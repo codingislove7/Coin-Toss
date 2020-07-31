@@ -27,7 +27,6 @@ function separate(Number) {
   return y + z;
 }
 // add result to list
-
 function addToList(content, target) {
   // get time
   const today = new Date();
@@ -64,8 +63,9 @@ function process(click, animate, resHeader) {
     }
   }, 100);
 
+  // after 3 min for animation
   setTimeout(() => {
-    // Check who is the winner and store result
+    // Check who is the winner and store and show the result
     if (computer == result && you == result) {
       history.computer += 1;
       history.you += 1;
@@ -75,7 +75,6 @@ function process(click, animate, resHeader) {
     `;
       addToList("WIN", computerList);
       addToList("WIN", playerList);
-      console.log("BOTH");
     } else if (computer == result) {
       history.computer += 1;
       resHeader.innerText = `
@@ -84,7 +83,6 @@ function process(click, animate, resHeader) {
       `;
       addToList("Win", computerList);
       addToList("---", playerList);
-      console.log("Computer");
     } else if (you == result) {
       history.you += 1;
       resHeader.innerText = `
@@ -93,29 +91,21 @@ function process(click, animate, resHeader) {
       `;
       addToList("WIN", playerList);
       addToList("---", computerList);
-      console.log("YOU");
     } else {
       resHeader.innerText = `
       ${result}
-      
         NO winner !
       `;
-      console.log("NONE");
+
       addToList("---", computerList);
       addToList("---", playerList);
     }
-
-    // resHeader.innerText = `
-    // ${result}
-
-    // `;
-    // Store results
+    // show the sum of result
     computerSum.innerText = history.computer;
     youSum.innerText = history.you;
   }, 3000);
 }
 
-const alert = document.querySelector;
 // run Process on Click
 function run() {
   if (this.innerText === "Heads") {
@@ -127,4 +117,3 @@ function run() {
 // Event Listeners
 headsBtn.addEventListener("click", run);
 tailsBtn.addEventListener("click", run);
-
