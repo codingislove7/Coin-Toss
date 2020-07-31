@@ -6,6 +6,8 @@ const tailsBtn = document.querySelector(".tailsBtn");
 const history = { computer: 0, you: 0 };
 const computerList = document.querySelector(".computerList");
 const playerList = document.querySelector(".playerList");
+const coinAnimate = document.querySelector("#coin");
+const resHeader = document.querySelector(".resHeader");
 // options
 const coin = ["Heads", "Tails"];
 // coinFlip
@@ -25,66 +27,104 @@ function separate(Number) {
   return y + z;
 }
 // add result to list
+
 function addToList(content, target) {
   // get time
   const today = new Date();
   const time =
     today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    // content
+  // content
   const text = `${time}
    ${content}`;
-//create li
+  //create li
   const li = document.createElement("li");
   // add content to the list
   li.innerText = text;
-  // add class to the list 
+  // add class to the list
   li.classList.add("list-group-item");
   // add to the start of the list
   target.insertBefore(li, target.childNodes[0]);
 }
 // Process
-function process(click) {
+function process(click, animate, resHeader) {
   //Computer Choice (Random)
   const computer = coinFlip();
   // Player coinFlip
   const you = click;
   // Result coinFlip
   const result = coinFlip();
-  // Check who is the winner and store result
-  if (computer == result && you == result) {
-    history.computer += 1;
-    history.you += 1;
-    addToList("+", computerList);
-    addToList("+", playerList);
-    console.log("BOTH");
-  } else if (computer == result) {
-    history.computer += 1;
-    addToList("+", computerList);
-    addToList("-", playerList);
-    console.log("Computer");
-  } else if (you == result) {
-    history.you += 1;
-    addToList("+", playerList);
-    addToList("-", computerList);
-    console.log("YOU");
-  } else {
-    console.log("NONE");
-    addToList("-", computerList);
-    addToList("-", playerList);
-  }
+
+  // coin animate
+  animate.className = "";
+  setTimeout(() => {
+    if (result === "Heads") {
+      animate.classList.add("heads");
+    } else {
+      animate.classList.add("tails");
+    }
+  }, 100);
+
+  setTimeout(() => {
+    // Check who is the winner and store result
+    if (computer == result && you == result) {
+      history.computer += 1;
+      history.you += 1;
+      resHeader.innerText = `
+    ${result}
+      Computer and You are the winner :)
+    `;
+      addToList("WIN", computerList);
+      addToList("WIN", playerList);
+      console.log("BOTH");
+    } else if (computer == result) {
+      history.computer += 1;
+      resHeader.innerText = `
+      ${result}
+        Computer is the winner !
+      `;
+      addToList("Win", computerList);
+      addToList("---", playerList);
+      console.log("Computer");
+    } else if (you == result) {
+      history.you += 1;
+      resHeader.innerText = `
+      ${result}
+        You are the winner !
+      `;
+      addToList("WIN", playerList);
+      addToList("---", computerList);
+      console.log("YOU");
+    } else {
+      resHeader.innerText = `
+      ${result}
+      
+        NO winner !
+      `;
+      console.log("NONE");
+      addToList("---", computerList);
+      addToList("---", playerList);
+    }
+
+    // resHeader.innerText = `
+    // ${result}
+
+    // `;
+    // Store results
+    computerSum.innerText = history.computer;
+    youSum.innerText = history.you;
+  }, 3000);
 }
 
+const alert = document.querySelector;
 // run Process on Click
 function run() {
   if (this.innerText === "Heads") {
-    process(this.innerText);
+    process(this.innerText, coinAnimate, resHeader);
   } else {
-    process(this.innerText);
+    process(this.innerText, coinAnimate, resHeader);
   }
-  // Store results
-  computerSum.innerText = history.computer;
-  youSum.innerText = history.you;
 }
 // Event Listeners
 headsBtn.addEventListener("click", run);
 tailsBtn.addEventListener("click", run);
+
